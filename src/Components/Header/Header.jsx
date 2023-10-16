@@ -13,13 +13,21 @@ import { useNavigate } from "react-router-dom";
 import LaboratorioNav from "./LaboratorioNav";
 import { Button } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { getFullname } from '../../Services/getFullname'
 
 Header.defaultProps = {
   isNotLogin: true,
   isUserAdmin: false,
 };
 export default function Header(props) {
-  const userActual = JSON.parse(localStorage.getItem("usuario"));
+  let userActual;
+  React.useEffect(async () => {
+    try {
+      userActual = await getFullname();
+    } catch (e) {
+      console.log(e)
+    }
+  }, [])
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const handleMenu = (event) => {

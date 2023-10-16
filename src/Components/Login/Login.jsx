@@ -29,13 +29,14 @@ export default function Login() {
     try {
         const hashPass = btoa(password)
         const value = await getUsuario(user, hashPass);
+        console.log(value)
         if(value) {    
             localStorage.setItem('usuario', JSON.stringify(value))
             setUser(value || JSON.parse(localStorage.getItem('usuario')))
             const rol = value.rol
             if(rol === "docente") navigate("/Docente/Pedidos");
             else if (rol === "lab") navigate("/Laboratorio/Pedidos")
-            else navigate("/login")            
+            else navigate("/login")           
         }else{
           throw new Error
         }
