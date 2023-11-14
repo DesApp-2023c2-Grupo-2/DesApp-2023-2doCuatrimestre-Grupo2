@@ -146,7 +146,6 @@ export default function Filtros(props) {
               >
                 <Button
                   sx={{
-                    color: "red",
                     border: "none",
                     width: "100%",
                     height: "100%",
@@ -156,7 +155,8 @@ export default function Filtros(props) {
                   color="error"
                   startIcon={
                     <ClearIcon
-                      sx={{
+                      sx={{                                                
+                        color: "red",
                         justifyContent: "center",
                         alingItem: "center",
                         width: "100%",
@@ -210,11 +210,12 @@ export default function Filtros(props) {
                     width: "100%",
                     height: "100%",
                   }}
-                  // variant="outlined"
+                  size={'large'}
                   color="error"
                   startIcon={
                     <EventRepeatIcon
-                      sx={{
+                      sx={{                        
+                        color: "red",
                         justifyContent: "center",
                         alingItem: "center",
                         width: "100%",
