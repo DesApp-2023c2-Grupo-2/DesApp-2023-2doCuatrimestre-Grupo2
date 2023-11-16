@@ -83,8 +83,6 @@ export default function NuevoPedido() {
 
   const navigate = useNavigate();
 
-  const [texto, setEncabezado] = useState("CARGA DE PEDIDO");
-
   //CARGA ENCABEZADO AL PEDIDO
   const cargaEncabezado = async (event) => {
     event.preventDefault();
@@ -101,7 +99,6 @@ export default function NuevoPedido() {
       data.get("cantidad_grupos").length > 0
     ) {
       setConfirCabecera("block");
-
       setEncabezadoPedido({
         descripcion: nro_pedido.toString(),
         fecha_solicitud: fecha,
@@ -115,7 +112,6 @@ export default function NuevoPedido() {
         numero_tp: nro_pedido,
       });
     } else {
-      // setFaltanDatos(true)
       setAnchorEl(event.currentTarget);
       setMensajeAlerta("Faltan cargar datos");
     }
@@ -143,45 +139,27 @@ export default function NuevoPedido() {
         setErrorEquipo("block");
         setEquipoOk("none");
       } else {
-        setErrorEquipo("none");
-        setEquipoOk("block");
-        const cargarNuevosEquipos = (dato) => {
-          setPedidoEquipos([...pedidoEquipos, dato]);
-        };
         const datoVer = {
           cantidad: parseInt(data.get("cant_equipo"), 10),
           equipo: equipoElegido,
         };
-        const cargarNuevosEquiposVer = (dato) => {
-          setverMasEquip([...verMasEquip, dato]);
-        };
-
-        cargarNuevosEquiposVer(datoVer);
-
-        cargarNuevosEquipos(dato);
-
+        setErrorEquipo("none");
+        setEquipoOk("block");
+        setPedidoEquipos([...pedidoEquipos, dato]);
+        setverMasEquip([...verMasEquip, datoVer]);
         setEquipoElegido("");
       }
     }
   };
   const eliminarEquipo = (event) => {
-    const cargar_Nuevos_EquiposVer = verMasEquip.filter(
-      (eq) => eq.equipo._id !== event._id
-    );
+    const cargar_Nuevos_EquiposVer = verMasEquip.filter((eq) => eq.equipo._id !== event._id);
     setverMasEquip(cargar_Nuevos_EquiposVer);
-
-    const cargar_Nuevos_Equipos = pedidoEquipos.filter(
-      (eq) => eq.equipo !== event._id
-    );
+    const cargar_Nuevos_Equipos = pedidoEquipos.filter((eq) => eq.equipo !== event._id);
     setPedidoEquipos(cargar_Nuevos_Equipos);
   };
 
   const set_IdEquip = (event, value) => {
-    if (value !== null) {
-      setEquipoElegido(value);
-    } else {
-      setAnchorEle(event.currentTarget);
-    }
+    value ? setEquipoElegido(value) : setAnchorEle(event.currentTarget);
   };
 
   // CARGA MATERIAL A LA LISTA
@@ -189,8 +167,6 @@ export default function NuevoPedido() {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-    console.log([materialElegido]);
-    console.log(parseInt(data.get("cant_material")) === 0);
     if (
       materialElegido === "" ||
       data.get("cant_material").length === 0 ||
@@ -205,28 +181,18 @@ export default function NuevoPedido() {
       const materialRepetido = pedidoMateriales.filter(
         (elemento) => elemento.material === dato.material
       );
-      console.log(materialRepetido);
       if (materialRepetido.length > 0) {
         setErrorMaterial("block");
         setMaterialOk("none");
       } else {
-        setErrorMaterial("none");
-        setMaterialOk("block");
-        const cargarNuevosMateriales = (dato) => {
-          setPedidoMateriales([...pedidoMateriales, dato]);
-        };
-
         const datoVer = {
           cantidad: parseInt(data.get("cant_material"), 10),
           material: materialElegido,
         };
-        const cargarNuevosMaterialesVer = (dato) => {
-          setverMasMateriales([...verMasMateriales, dato]);
-        };
-
-        cargarNuevosMaterialesVer(datoVer);
-
-        cargarNuevosMateriales(dato);
+        setErrorMaterial("none");
+        setMaterialOk("block");
+        setPedidoMateriales([...pedidoMateriales, dato]);
+        setverMasMateriales([...verMasMateriales, datoVer]);
         setMatElegido("");
         setAnchorEleM(null);
       }
@@ -236,25 +202,15 @@ export default function NuevoPedido() {
   // ELIMINAR MATERIAL DE LA LISTA
 
   const eliminarMaterial = (event) => {
-    console.log(event);
-    const pedido_MaterialesVer = verMasMateriales.filter(
-      (mate) => mate.material._id !== event._id
-    );
+    const pedido_MaterialesVer = verMasMateriales.filter((mate) => mate.material._id !== event._id);
     setverMasMateriales(pedido_MaterialesVer);
 
-    const pedido_Materiales = pedidoMateriales.filter(
-      (mate) => mate.material !== event._id
-    );
+    const pedido_Materiales = pedidoMateriales.filter((mate) => mate.material !== event._id);
     setPedidoMateriales(pedido_Materiales);
-    console.log(event._id);
   };
 
   const set_IdMat = (event, value) => {
-    if (value !== null) {
-      setMatElegido(value);
-    } else {
-      setAnchorEleM(event.currentTarget);
-    }
+    value ? setMatElegido(value) : setAnchorEleM(event.currentTarget);
   };
 
   // CARGA REACTIVOS A LA LISTA
@@ -387,13 +343,9 @@ export default function NuevoPedido() {
   };
 
   const eliminarReactivo = (value) => {
-    const cargar_reactivos_ver = verMasReactivos.filter(
-      (reactivo) => reactivo.reactivo._id !== value._id
-    );
+    const cargar_reactivos_ver = verMasReactivos.filter((reactivo) => reactivo.reactivo._id !== value._id);
     setverMasReactivos(cargar_reactivos_ver);
-    const cargar_reactivos = pedidoReactivos.filter(
-      (reactivo) => reactivo.reactivo !== value._id
-    );
+    const cargar_reactivos = pedidoReactivos.filter((reactivo) => reactivo.reactivo !== value._id);
     setPedidoReactivos(cargar_reactivos);
   };
 
@@ -406,19 +358,18 @@ export default function NuevoPedido() {
       setAnchorEleR(event.currentTarget);
     }
   };
-  // const set_IdMat = (event, value) => { if (value !== null){ setMatElegido(value)} else{ setAnchorEleM(event.currentTarget)}; };
 
   const [anchorE2, setAnchorE2] = React.useState(null);
   const [pedidoIncompleto, setPedidoIncompleto] = useState(false);
   const handleSubmit = (event) => {
-    event.preventDefault();
-
+    event.preventDefault();    
     if (
-      pedidoEncabezado !== "" &&
+      Object.keys(pedidoEncabezado).length != 0 &&
+      !Object.keys(pedidoEncabezado).find(e=> pedidoEncabezado[e] == "") &&
       (pedidoMateriales.length > 0 ||
         pedidoEquipos.length > 0 ||
         pedidoReactivos.length > 0)
-    ) {
+    ) {      
       const pedido = {
         docente: {
           nombre: userActual.nombre,
@@ -440,18 +391,18 @@ export default function NuevoPedido() {
         lista_reactivos: pedidoReactivos,
         lista_materiales: pedidoMateriales,
       };
-
       postPedido(pedido);
       setConfirCabecera("none");
       setPedidoIncompleto(false);
       setAnchorE2(event.currentTarget);
-    } else setPedidoIncompleto(true);
+    } else {
+      setPedidoIncompleto(true)
+    };
     setAnchorE2(event.currentTarget);
   };
 
   const handleClose2 = () => {
     setAnchorE2(null);
-
     navigate("/Docente/Pedidos");
   };
 
@@ -460,34 +411,27 @@ export default function NuevoPedido() {
 
   useEffect(() => {
     let mounted = true;
-    getListaEquipos().then((items) => {
-      if (mounted) {
-        setListaEquipos(items);
-      }
-    });
-    getListaMateriales().then((items) => {
-      if (mounted) {
-        setListaMateriales(items);
-      }
-    });
-    getListaReactivos().then((items) => {
-      if (mounted) {
-        setListaReactivos(items);
-      }
-    });
-    getCantidadPedidos().then((items) => {
-      if (mounted) {
-        setCantPedido(items);
-      }
-    });
+    const fetchData = async () => {
+      const equipos = await getListaEquipos();
+      const materiales = await getListaMateriales();
+      const reactivos = await getListaReactivos();
+      const cantidadPedidos = await getCantidadPedidos();
 
+      if (mounted) {
+        setListaEquipos(equipos);
+        setListaMateriales(materiales);
+        setListaReactivos(reactivos);
+        setCantPedido(cantidadPedidos);
+      }
+    };
+    fetchData();
     return () => (mounted = false);
   }, []);
 
   return (
     <>
       <Box sx={{ flexGrow: 1, m: 2 }}>
-        <Header texto={texto}></Header>
+        <Header></Header>
       </Box>
       {/* COMIENZA EL CONTENEDOR DE LA PAGINA    */}
       <Container component="main" color="primary">
