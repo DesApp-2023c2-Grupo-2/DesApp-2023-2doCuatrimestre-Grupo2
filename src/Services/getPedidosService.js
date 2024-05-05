@@ -49,6 +49,7 @@ export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edif
             params.fecha_inicio = fecha_inicio;
             params.fecha_fin = fecha_fin;
         }
+        params.page = 1;
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/`, {
             params,
             headers: {        
@@ -57,7 +58,7 @@ export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edif
               "Content-Type": "application/json",
             },
         })
-        return response.data;
+        return response.data.data
     } catch (error) {
         console.error(error);
         throw error;
