@@ -406,6 +406,14 @@
     flex-direction: row !important;
 }
 
+.inactivo .MuiCardActionArea-root {
+    background-color: rgb(59, 59, 59) !important;
+}
+
+.inactivo .css-1nxlw3t-MuiPaper-root-MuiDialog-paper {
+    background-color: rgb(59, 59, 59) !important;
+}
+
 @media (max-width: 1200px) {
     /* .css-19obuss-MuiGrid-root {
         display: grid !important;

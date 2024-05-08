@@ -42,6 +42,7 @@ function ModReactivo({
   const [titulo, setTitulo] = useState("");
   const [scroll, setScroll] = React.useState("paper");
   const [enough, setEnough] = useState(false);
+  const [notAvailable, setNotAvailable] = useState(false);
 
   const modDescripcion = (event) => {
     if (event.target.value !== null) {
@@ -209,6 +210,14 @@ function ModReactivo({
                 setEnough(e.target.checked);
               }}
               label="Cantidad Suficiente"
+            />
+            <FormControlLabel
+              checked={notAvailable}
+              control={<Checkbox />}
+              onChange={(e) => {
+                setNotAvailable(e.target.checked);
+              }}
+              label="No disponible"
             />
           </Grid>
         </Grid>
