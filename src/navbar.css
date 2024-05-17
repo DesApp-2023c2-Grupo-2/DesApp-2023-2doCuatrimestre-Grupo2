@@ -59,6 +59,12 @@ header {
     justify-content: center !important;
 }
 
+.css-1umulzw-MuiPaper-root-MuiAppBar-root{
+    margin-bottom: 30px !important;
+}
+
+
+
 .inactivo-label {
     text-align: center !important;
     font-size: 13px !important;

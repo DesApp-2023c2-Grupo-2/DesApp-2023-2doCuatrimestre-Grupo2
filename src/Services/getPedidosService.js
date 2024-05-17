@@ -32,35 +32,45 @@ export async function getCantidadPedidos() {
       throw error; 
     }
   }
-
-
-
-
-export async function axiosGetPedido( tipo_pedido, fecha_inicio, fecha_fin, edificio, checked)  {
-    var params={}    
+  
+  export async function axiosGetPedido(
+    tipo_pedido,
+    fecha_inicio,
+    fecha_fin,
+    edificio,
+    checked,
+    page
+  ) {
+    var params = {};
     try {
-        if (tipo_pedido && tipo_pedido !== "TODOS") {
-            params.tipo_pedido = tipo_pedido;
+      if (tipo_pedido && tipo_pedido !== "TODOS") {
+        params.tipo_pedido = tipo_pedido;
+      }
+      if (edificio && edificio !== "TODOS") {
+        params.edificio = edificio;
+      }
+      if (fecha_inicio && fecha_fin) {
+        params.fecha_inicio = fecha_inicio;
+        params.fecha_fin = fecha_fin;
+      }
+  
+      params.validsOnly = checked;
+      params.page = page;
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/pedido/`,
+        {
+          params,
+          headers: {
+            Authorization: `Bearer ${token()}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
         }
-        if (edificio && edificio !== "TODOS") {
-            params.edificio = edificio;
-        }
-        if (fecha_inicio && fecha_fin) {
-            params.fecha_inicio = fecha_inicio;
-            params.fecha_fin = fecha_fin;
-        }
-        params.validsOnly = checked
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/pedido/`, {
-            params,
-            headers: {        
-              Authorization: `Bearer ${token()}`,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-        })
-        return response.data;
+      );
+      return response.data;
     } catch (error) {
-        console.error(error);
-        throw error;
+      console.error(error);
+      throw error;
     }
-};
+  }
+

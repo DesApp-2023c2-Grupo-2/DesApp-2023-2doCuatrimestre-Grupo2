@@ -1,7 +1,7 @@
 import PedidoV1 from "./PedidoV1";
 import { getPedidosPorDni } from "../../Services/getPedidosPorDNIService";
 import Header from '../Header/Header'
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { experimentalStyled as styled} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -12,6 +12,7 @@ import { userContext } from "../../Context/LabProvider";
 import BasicModal from "../Laboratorio/utils/BasicModal";
 import { Fab } from "@mui/material";
 import Filtros from "../Laboratorio/Filtros";
+import { correctionDate } from "../Laboratorio/utils/formatDate";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -23,16 +24,43 @@ const Item = styled(Paper)(({ theme }) => ({
 
 function Pedidos() {
 
+  const [listaPedidos, setListaPedidos] = useState([]);
+  const [esAdmin, setEsAdmin] = useState("");
+  const { update,  user, userInfo } = useContext(userContext);
+  const [edicionActiva, setEdicionActiva] = useState(false);
 
-  // controlar si es adminitrador
-  const [esAdmin, setEsAdmin] = useState(true)
-  const {user, userInfo, update} = React.useContext(userContext)
-  
+  /********************************************** */
+  const now = correctionDate(new Date())
+  const [tipo_pedido, setTipoPedido] = React.useState("TODOS");
+  const [fecha_utilizacion, set_fecha_utilizacion] = React.useState("");
+  const [fecha_inicio, set_fecha_inicio] = React.useState("");
+  const [fecha_fin, set_fecha_fin] = React.useState(now);
+  const [edificio, set_edificio] = React.useState("TODOS");
+  const [checked, setChecked] = React.useState("TODOS");
+
+  // *******************************
+  const [open, setOpen] = React.useState("");
+  const [scroll, setScroll] = React.useState("paper");
+  const [alert, setAlert] = useState(false)
 
   const [nuevoPedido, setNuevoPedido] = useState(false);
   const [texto, setEncabezado] = useState("DOCENTE");
 
-  const [listaPedidos, setListaPedidos] = useState([]);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const cargarEstado = (event) => {
+    event.preventDefault();
+    console.log(event.target.value);
+
+    guardarEstadoPedido(event.target.value);
+  };
+
+  const guardarEstadoPedido = (event) => {
+    setTipoPedido(event);
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -66,7 +94,24 @@ function Pedidos() {
         </Box>
       ) : (<NuevoPedido></NuevoPedido>)}
       {/* opcion pantalla */}
-        
+      <Filtros
+        className="filtros-profesor"
+        cargarEstado={cargarEstado}
+        setTipoPedido={setTipoPedido}
+        fecha_fin={fecha_fin}
+        set_fecha_fin={set_fecha_fin}
+        set_fecha_inicio={set_fecha_inicio}
+        fecha_inicio={fecha_inicio}
+        edificio={edificio}
+        set_edificio={set_edificio}
+        tipo_pedido={tipo_pedido}
+        open={Boolean(open)}
+        setOpen={setOpen}
+        handleClose={handleClose}
+        scroll={scroll}
+        alert={alert}
+        setAlert={setAlert}
+      />
       
       {(listaPedidos.length < 1 && !(nuevoPedido)) ?
         (<Box sx={{ flexGrow: 1, md: 2 }}><NoEncontrados /></Box>)
