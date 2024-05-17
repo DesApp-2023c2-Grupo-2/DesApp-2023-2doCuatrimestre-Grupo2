@@ -51,14 +51,8 @@ export default function Filtros(props) {
     document.querySelector('.filtros').classList.toggle("mostrar");
   }
 
-  const handleCheckboxChange = () => {
-    const inac = document.querySelector('inactivo-check');
-    const isChecked = inac.current.checked;
-    if(isChecked) {
-      //Renderizar TODOS (comp por defecto)
-    } else {
-      //Renderizar ACTIVOS (mandar en la request al back el parametro "validsOnly" en true)
-    }
+  const handleCheckboxChange = (checked) => {
+      props.setChecked(checked)
   }
 
   React.useEffect(() => {
@@ -101,7 +95,7 @@ export default function Filtros(props) {
               <Box>
                 <FormControl>
                   <p className="inactivo-label">Excluir inactivos</p>
-                  <FormControlLabel control={<Checkbox defaultChecked onChange={handleCheckboxChange}/>} className="inactivo-check"/>
+                  <FormControlLabel control={<Checkbox defaultChecked onChange={(e) => handleCheckboxChange(e.target.checked)}/>} className="inactivo-check"/>
                 </FormControl>
               </Box>
             <Box sx={{ display: "flex", pt: 1 }}>
